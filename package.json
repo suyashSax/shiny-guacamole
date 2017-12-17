@@ -1,0 +1,18 @@
+{
+  "name": "cryptoworth",
+  "version": "1.0.0",
+  "description": "How much would x BTC bought on y be worth today?",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hash, AI, T-Rex",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.7"
+  }
+}
