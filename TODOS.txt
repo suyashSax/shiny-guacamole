@@ -1,0 +1,17 @@
+Stuff to do:
+
+Backend:
+1. Figure out how to run a script every 24 hrs
+2. Find API for ETH, LTC and integrate into existing collection
+3. Deploy
+
+Actually, idk if we need a separate store of data.
+To get all: takes ~ 3000 ms
+To get single: takes ~ 200 ms
+
+Frontend:
+1. Setup fave library (React+Redux/JQuery)
+2. Build UI
+3. GET collection on first load
+4. GET current price, process logic
+5. Edge case

@@ -13,6 +13,8 @@
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "mongoose": "^4.13.7"
+    "moment": "^2.20.0",
+    "mongoose": "^4.13.7",
+    "node-schedule": "^1.2.5"
   }
 }
