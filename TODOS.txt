@@ -1,9 +1,8 @@
 Stuff to do:
 
 Backend:
-1. Figure out how to run a script every 24 hrs
-2. Find API for ETH, LTC and integrate into existing collection
-3. Deploy
+1. Find API for ETH, LTC and integrate into existing collection
+2. Deploy
 
 Actually, idk if we need a separate store of data.
 To get all: takes ~ 3000 ms
