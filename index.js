@@ -17,6 +17,9 @@ GET: BTC PRICE
 INPUT: YYYY-MM-DD
 */
 
+app.use(bodyParser.json())
+app.use(express.static(__dirname));
+
 app.get('/btc/:date', (req, res) => {
     var date = req.params.date
     Price.findOne({date: date}).then((obj) => {
@@ -30,6 +33,10 @@ app.get('/btc/:date', (req, res) => {
 GET: ALL BTC HISTORY
 This should be refactored to return an object of records key'd by date...
 */
+
+app.get('/', (req,res) => {
+  res.sendFile(path.join(__dirname + '/index.html'));
+})
 
 app.get('/btc/', (req, res) => {
     Price.find({}).then((objects) => {
