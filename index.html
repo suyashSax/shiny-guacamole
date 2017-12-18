@@ -12,6 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="css/default.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<script src="js/modernizr.custom.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
 	</head>
 	<body class="nl-blurred">
 		<div class="container demo-1">
@@ -21,13 +22,13 @@
 				<span class="right"><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=15139"><span>Back to the Codrops Article</span></a></span>
 			</div> -->
 			<header>
-				<h1> The Retrospective Crypto <span>how much would you be worth if you invested in cryptocurrency that one time?</span></h1>
+				<h1 style="font-size:400%"> The Retrospective Crypto <span>how much would you be worth if you invested in cryptocurrency that one time?</span></h1>
 			</header>
 			<div class="main clearfix">
 				<form id="nl-form" class="nl-form">
-					If I bought $ <input type="text" value="" placeholder="0" data-subline="For example:= 100"/>
+					If I bought $ <input type="text" name="amount" value="" placeholder="0" data-subline="For example:= 100"/>
 					<br /> worth of
-					<select>
+					<select name="currency">
 						<option value="1" selected>cryptocurrency</option>
 						<option value="2">Bitcoin (BTC)</option>
 						<option value="3">Ether (ETH)</option>
@@ -35,10 +36,10 @@
 					</select>
 					<br />on
 					<select>
-						<input type="date" />
+						<input type="date" name="date"/>
 					</select>
 					<div class="nl-submit-wrap">
-						<button class="nl-submit" type="submit">How much would I be worth?</button>
+						<button class="nl-submit">How much would I be worth?</button>
 					</div>
 					<div class="nl-overlay"></div>
 				</form>

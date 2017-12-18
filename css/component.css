@@ -12,9 +12,9 @@
 /* general style for the form */
 .nl-form {
 	width: 100%;
-	margin: 0.3em auto 0 auto;
-	font-size: 4em;
-	line-height: 1.5;
+	margin: 0.2em auto 0 auto;
+	font-size: 3.75em;
+	line-height: 2;
 }
 
 .nl-form ul {
@@ -23,8 +23,23 @@
 	padding: 0;
 }
 
+.nl-form input {
+	width: 55%;
+	border: none;
+	background: transparent;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	display: inline;
+	padding: 0;
+	margin: 0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
 /* normalize the input elements, make them look like everything else */
-.nl-form input,
 .nl-form select,
 .nl-form button {
 	border: none;
@@ -34,7 +49,7 @@
 	color: inherit;
 	font-weight: inherit;
 	line-height: inherit;
-	display: inline-block;
+	display: inline;
 	padding: 0;
 	margin: 0;
 	-webkit-appearance: none;
@@ -172,7 +187,11 @@
 
 /* custom placeholder color */
 input::-webkit-input-placeholder {
-	color: rgba(255,255,255,0.8);
+	color: #b14943;
+}
+
+input:hover::-webkit-input-placeholder {
+	color: black;
 }
 
 input:active::-webkit-input-placeholder ,
@@ -181,7 +200,7 @@ input:focus::-webkit-input-placeholder {
 }
 
 input::-moz-placeholder {
-	color: rgba(255,255,255,0.8);
+	color: #b14943;
 }
 
 input:active::-moz-placeholder,
@@ -189,13 +208,21 @@ input:focus::-moz-placeholder {
 	color: rgba(255,255,255,0.2);
 }
 
-input:-ms-input-placeholder {  
-	color: rgba(255,255,255,0.8);
+input:hover::-moz-placeholder {
+	color: black;
+}
+
+input:-ms-input-placeholder {
+	color: #b14943;
 }
 
 input:active::-ms-input-placeholder ,
 input:focus::-ms-input-placeholder {
 	color: rgba(255,255,255,0.2);
+}
+
+input:hover::-ms-input-placeholder {
+	color: black;
 }
 
 /* example field below text input */
