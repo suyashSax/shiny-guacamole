@@ -22,13 +22,13 @@
 				<span class="right"><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=15139"><span>Back to the Codrops Article</span></a></span>
 			</div> -->
 			<header>
-				<h1 style="font-size:400%"> The Retrospective Crypto <span>how much would you be worth if you invested in cryptocurrency that one time?</span></h1>
+				<h1 style="font-size:400%"> The Retrospective Crypto <span>how much would you be worth if you'd invested in that cryptocurrency that one time?</span></h1>
 			</header>
 			<div class="main clearfix">
 				<form id="nl-form" class="nl-form">
-					If I bought $ <input type="text" name="amount" value="" placeholder="0" data-subline="For example:= 100"/>
+					If I bought $ <input type="text" name="amount" id="amountField" value="" placeholder="0" data-subline="For example:= 100"/>
 					<br /> worth of
-					<select name="currency">
+					<select id="currencyField" name="currency">
 						<option value="1" selected>cryptocurrency</option>
 						<option value="2">Bitcoin (BTC)</option>
 						<option value="3">Ether (ETH)</option>
@@ -36,10 +36,10 @@
 					</select>
 					<br />on
 					<select>
-						<input type="date" name="date"/>
+						<input type="date" name="date" id="dateField" min='2015-05-01' max='2000-13-13'/>
 					</select>
 					<div class="nl-submit-wrap">
-						<button class="nl-submit">How much would I be worth?</button>
+						<button class="nl-submit" type="button" onclick="submitForm()">How much would I be worth?</button>
 					</div>
 					<div class="nl-overlay"></div>
 				</form>
@@ -48,6 +48,31 @@
 		<script src="js/nlform.js"></script>
 		<script>
 			var nlform = new NLForm( document.getElementById( 'nl-form' ) );
+      function submitForm() {
+        var c = document.getElementById("currencyField");
+        var selectedCurrency = c.options[c.selectedIndex].value;
+
+        var d = document.getElementById("dateField");
+        var selectedDate = d.value;
+
+        var a = document.getElementById("amountField");
+        var selectedAmount = a.value;
+        console.log(a.value);
+
+      }
+
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+      if(dd<10){
+        dd='0'+dd
+      }
+      if(mm<10){
+        mm='0'+mm
+      }
+      today = yyyy+'-'+mm+'-'+dd;
+      document.getElementById("dateField").setAttribute("max", today);
 		</script>
 	</body>
 </html>

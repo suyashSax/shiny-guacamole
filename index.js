@@ -34,6 +34,19 @@ GET: ALL BTC HISTORY
 This should be refactored to return an object of records key'd by date...
 */
 
+// the same as above, except we will do the computation of worth in here
+app.post('/compute_worth/btc', (req, res) => {
+  let payload = {
+    date: req.body.date,
+    amount:req.body.amount
+  }
+  Price.findOne({date: date}).then((obj) => {
+      res.send(obj)
+  }, (err) => {
+      res.status(400).send(err)
+  })
+})
+
 app.get('/', (req,res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 })
