@@ -71,6 +71,28 @@ schedule.scheduleJob('0 0 * * *', () => {
             })
         })
         .catch((err) => console.log("Error"))
+
+    // ETH
+
+    axios.get('https://min-api.cryptocompare.com/data/pricehistorical?fsym=ETH&tsyms=USD&ts=' + epoch)
+        .then((res) => {
+            var price = res.data.ETH.USD
+            console.log({
+                date,
+                price
+            })
+            ETH.findOne({date: date}).then((existingKey) => {
+                if (existingKey){
+                    // Do nothing, key exists
+                }
+                else {
+                    new ETH({
+                        date: key,
+                        price: val
+                    }).save()
+                }
+            })
+        })
 })
 
 /*
