@@ -38,7 +38,7 @@
 				<span class="right"><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=15139"><span>Back to the Codrops Article</span></a></span>
 			</div> -->
 			<header>
-				<h1 style="font-size:400%"> The Retrospective Crypto <span>how much would you be worth if you'd invested in that cryptocurrency that one time?</span></h1>
+				<h1 style="font-size:400%"> The Retrospective Crypto <span style="font-size:50%">how much would you have made if you'd invested in that cryptocurrency that one time?</span></h1>
 			</header>
 			<div class="main clearfix">
 				<form id="nl-form" class="nl-form">
@@ -55,7 +55,7 @@
 						<input type="date" name="date" id="dateField" min='2015-05-01' max='2000-13-13'/>
 					</select>
 					<div class="nl-submit-wrap">
-						<button class="nl-submit" type="button" onclick="submitForm()">How much would I be worth?</button>
+						<button class="nl-submit" type="button" onclick="submitForm()">How much would I have made?</button>
 					</div>
 					<div class="nl-overlay"></div>
 				</form>
@@ -67,21 +67,71 @@
       function submitForm() {
         var c = document.getElementById("currencyField");
         var selectedCurrency = c.options[c.selectedIndex].value;
+        console.log(selectedCurrency)
 
         var d = document.getElementById("dateField");
         var selectedDate = d.value;
+        console.log(selectedDate);
 
         var a = document.getElementById("amountField");
         var selectedAmount = a.value;
 
-        if (!(!isNaN(selectedAmount) && selectedAmount.toString().indexOf('.') != -1))
+        if (!(isValidNumber(selectedAmount)))
           alert('this is not a valid amount');
+        else if (selectedCurrency == 1 || selectedDate == "")
+          alert("please select a date and currency")
         else if(parseFloat(selectedAmount) == 0)
           alert('please enter a nonzero amount');
         else {
           //do the ajax request
+          let object = {
+            "date" : selectedDate,
+            "amount" : selectedAmount
+          };
+
+          var currPrice;
+          var prevPrice;
+
+          var a = false;;
+          var b = false;
+
+          $.ajax({
+              url: 'https://api.coindesk.com/v1/bpi/currentprice.json',
+              type: 'GET',
+              success: function(data){
+                  currPrice = JSON.parse(data).bpi.USD.rate_float;
+                  a = true;
+              },
+              error: function(data) {
+                  alert('woops!'); //or whatever
+                  a = false;
+              }
+          });
+          $.ajax({
+              url: "http://localhost:5000/btc/"+selectedDate,
+              type: 'GET',
+              success: function(data){
+                  prevPrice = data.price;
+                  b = true;
+              },
+              error: function(data) {
+                  alert('woops!'); //or whatever
+                  b = false;
+              }
+          });
         }
       }
+
+      function isValidNumber(num) {
+          if(num.match(/^-{0,1}\d+$/)){
+            return true;
+          }else if(num.match(/^\d+\.\d+$/)){
+            return true;
+          }else{
+            return false;
+          }
+      }
+
 		</script>
 	</body>
 </html>

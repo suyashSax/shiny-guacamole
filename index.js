@@ -17,13 +17,16 @@ GET: BTC PRICE
 INPUT: YYYY-MM-DD
 */
 
+var today = moment().subtract(1, "days").format('YYYY-MM-DD')
+
 app.use(bodyParser.json())
 app.use(express.static(__dirname));
 
 app.get('/btc/:date', (req, res) => {
-    var date = req.params.date
+    var date = req.params.date;
     Price.findOne({date: date}).then((obj) => {
-        res.send(obj)
+        var price = obj.btc;
+        res.send({price:price})
     }, (err) => {
         res.status(400).send(err)
     })
@@ -34,18 +37,6 @@ GET: ALL BTC HISTORY
 This should be refactored to return an object of records key'd by date...
 */
 
-// the same as above, except we will do the computation of worth in here
-app.post('/compute_worth/btc', (req, res) => {
-  let payload = {
-    date: req.body.date,
-    amount:req.body.amount
-  }
-  Price.findOne({date: date}).then((obj) => {
-      res.send(obj)
-  }, (err) => {
-      res.status(400).send(err)
-  })
-})
 
 app.get('/', (req,res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
@@ -62,7 +53,6 @@ app.get('/btc/', (req, res) => {
 /*
 UPDATE DATA STORE EVERY MIDNIGHT
 */
-var today = moment().subtract(1, "days").format('YYYY-MM-DD')
 
 schedule.scheduleJob('0 0 * * *', () => {
     axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + '2017-12-16' + '&end=' + today)
