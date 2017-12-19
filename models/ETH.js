@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const priceSchema = new Schema({
+const ethSchema = new Schema({
     date: String,
-    btc: Number
+    price: Number
 })
 
-mongoose.model('Prices', priceSchema)
+mongoose.model('ETH', ethSchema)
