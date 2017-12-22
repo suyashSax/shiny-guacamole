@@ -1,3 +1,8 @@
+/*
+- This script downloads historic price data for top 5 cryptos and dumps to the mLab database
+- This data is small in size, so we can simply run the script every midnight to update the previous day's price
+*/
+
 const mongoose = require('mongoose')
 const axios = require('axios')
 const moment = require('moment')
@@ -5,26 +10,29 @@ const moment = require('moment')
 const keys = require('./config/keys')
 require('./models/BTC')
 require('./models/ETH')
+require('./models/LTC')
+require('./models/XRP')
+require('./models/BCH')
 
 const BTC = mongoose.model('BTC')
 const ETH = mongoose.model('ETH')
-
-var today = moment().subtract(1, "days")
-var todaysDate  = today.format('YYYY-MM-DD')
+const LTC = mongoose.model('LTC')
+const XRP = mongoose.model('XRP')
+const BCH = mongoose.model('BCH')
 
 mongoose.connect(keys.mongoURI)
 
-// POPULATE DATABASE - BTC
+// BTC (Bitcoin)
+// Starting: 13-04-12
 
-axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + '2010-07-17' + '&end=' + todaysDate)
-    .then((result) => {
-        var obj = result.data.bpi
-        Object.entries(obj).forEach(([key, val]) => {
+axios.get('https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=alltime&format=json')
+    .then((res) => {
+        var data = res.data
+        data.forEach((obj) => {
+            var key = moment(obj.time).format('DD-MM-YY')
+            var val = obj.average
             BTC.findOne({date: key}).then((existingKey) => {
-                if (existingKey){
-                    // Do nothing, key exists
-                }
-                else {
+                if (!existingKey){
                     new BTC({
                         date: key,
                         price: val
@@ -33,25 +41,88 @@ axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + '2010
             })
         })
     })
-    .catch((err) => {
-        console.log("Error")
-})
+    .catch((err) => console.log(err))
 
-// POPULATE DATABASE - ETHER
+// ETH (Ethereum)
+// Starting: 07-04-16
 
-var etherPrices = require('./python/ether.json');
-
-Object.entries(etherPrices).forEach(([key, val]) => {
-    var date = moment.unix(key).format("YYYY-MM-DD")
-    ETH.findOne({date: date}).then((existingKey) => {
-        if (existingKey){
-            // Do nothing, key exists
-        }
-        else {
-            new ETH({
-                date: date,
-                price: val
-            }).save()
-        }
+axios.get('https://apiv2.bitcoinaverage.com/indices/global/history/ETHUSD?period=alltime&format=json')
+    .then((res) => {
+        var data = res.data
+        data.forEach((obj) => {
+            var key = moment(obj.time).format('DD-MM-YY')
+            var val = obj.average
+            ETH.findOne({date: key}).then((existingKey) => {
+                if (!existingKey){
+                    new ETH({
+                        date: key,
+                        price: val
+                    }).save()
+                }
+            })
+        })
     })
-})
+    .catch((err) => console.log(err))
+
+// LTC (Litecoin)
+// Starting: 07-04-16
+
+axios.get('https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=alltime&format=json')
+    .then((res) => {
+        var data = res.data
+        data.forEach((obj) => {
+            var key = moment(obj.time).format('DD-MM-YY')
+            var val = obj.average
+            LTC.findOne({date: key}).then((existingKey) => {
+                if (!existingKey){
+                    new LTC({
+                        date: key,
+                        price: val
+                    }).save()
+                }
+            })
+        })
+    })
+    .catch((err) => console.log(err))
+
+// XRP (Ripple)
+// Starting: 26-04-17
+
+axios.get('https://apiv2.bitcoinaverage.com/indices/global/history/XRPUSD?period=alltime&format=json')
+    .then((res) => {
+        var data = res.data
+        data.forEach((obj) => {
+            var key = moment(obj.time).format('DD-MM-YY')
+            var val = obj.average
+            XRP.findOne({date: key}).then((existingKey) => {
+                if (!existingKey){
+                    new XRP({
+                        date: key,
+                        price: val
+                    }).save()
+                }
+            })
+        })
+    })
+    .catch((err) => console.log(err))
+
+// BCH (Bitcoin Cash)
+// Starting: 03-08-17
+
+axios.get('https://apiv2.bitcoinaverage.com/indices/global/history/BCHUSD?period=alltime&format=json')
+    .then((res) => {
+        var data = res.data
+        data.forEach((obj) => {
+            var key = moment(obj.time).format('DD-MM-YY')
+            var val = obj.average
+            BCH.findOne({date: key}).then((existingKey) => {
+                if (!existingKey){
+                    new BCH({
+                        date: key,
+                        price: val
+                    }).save()
+                }
+            })
+        })
+    })
+    .catch((err) => console.log(err))
