@@ -8,16 +8,18 @@ const schedule = require('node-schedule')
 const keys = require('./config/keys')
 require('./models/BTC')
 require('./models/ETH')
+require('./models/LTC')
+require('./models/XRP')
+require('./models/BCH')
 
 const BTC = mongoose.model('BTC')
 const ETH = mongoose.model('ETH')
+const LTC = mongoose.model('LTC')
+const XRP = mongoose.model('XRP')
+const BCH = mongoose.model('BCH')
 
 mongoose.connect(keys.mongoURI)
 const app = express()
-
-var today = moment().subtract(1, "days")
-var date  = today.format('YYYY-MM-DD')
-var epoch = today.unix()
 
 app.use(bodyParser.json())
 app.use(express.static(__dirname));
@@ -28,7 +30,7 @@ app.get('/', (req,res) => {
 
 /*
 GET: PRICE
-INPUT: YYYY-MM-DD
+INPUT: DD-MM-YY
 */
 
 app.get('/BTC/:date', (req, res) => {
@@ -49,64 +51,36 @@ app.get('/ETH/:date', (req, res) => {
     })
 })
 
-// UPDATE DATA STORE EVERY MIDNIGHT
-
-schedule.scheduleJob('0 0 * * *', () => {
-    // BTC
-    axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + '2017-12-18' + '&end=' + today)
-        .then((result) => {
-            var obj = result.data.bpi
-            Object.entries(obj).forEach(([key, val]) => {
-                BTC.findOne({date: key}).then((existingKey) => {
-                    if (existingKey){
-                        // Do nothing, key exists
-                    }
-                    else {
-                        new BTC({
-                            date: key,
-                            price: val
-                        }).save()
-                    }
-                })
-            })
-        })
-        .catch((err) => console.log("Error"))
-
-    // ETH
-
-    axios.get('https://min-api.cryptocompare.com/data/pricehistorical?fsym=ETH&tsyms=USD&ts=' + epoch)
-        .then((res) => {
-            var price = res.data.ETH.USD
-            console.log({
-                date,
-                price
-            })
-            ETH.findOne({date: date}).then((existingKey) => {
-                if (existingKey){
-                    // Do nothing, key exists
-                }
-                else {
-                    new ETH({
-                        date: key,
-                        price: val
-                    }).save()
-                }
-            })
-        })
-})
-
-/*
-GET: ALL HISTORY
-This should be refactored to return an object of records key'd by date...
-*/
-
-app.get('/BTC/', (req, res) => {
-    BTC.find({}).then((objects) => {
-        res.send(objects)
+app.get('/LTC/:date', (req, res) => {
+    var date = req.params.date;
+    LTC.findOne({date: date}).then((obj) => {
+        res.send({date: obj.date, price: obj.price})
     }, (err) => {
         res.status(400).send(err)
     })
 })
+
+app.get('/XRP/:date', (req, res) => {
+    var date = req.params.date;
+    XRP.findOne({date: date}).then((obj) => {
+        res.send({date: obj.date, price: obj.price})
+    }, (err) => {
+        res.status(400).send(err)
+    })
+})
+
+app.get('/BCH/:date', (req, res) => {
+    var date = req.params.date;
+    BCH.findOne({date: date}).then((obj) => {
+        res.send({date: obj.date, price: obj.price})
+    }, (err) => {
+        res.status(400).send(err)
+    })
+})
+
+/*
+TODO: GET ALL HISTORY, ALL CRYPTOS
+*/
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log("Started server on port", PORT))
