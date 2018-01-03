@@ -13,7 +13,7 @@
 .nl-form {
 	width: 100%;
 	margin: 0.2em auto 0 auto;
-	font-size: 2.5em;
+	font-size: 3.75em;
 	line-height: 2;
 }
 
@@ -224,6 +224,10 @@ input:focus::-ms-input-placeholder {
 input:hover::-ms-input-placeholder {
 	color: black;
 }
+
+/* input::-webkit-calendar-picker-indicator{
+    display: none;
+} */
 
 /* example field below text input */
 .nl-ti-text ul li.nl-ti-example {

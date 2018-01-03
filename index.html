@@ -38,17 +38,19 @@
 				<span class="right"><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=15139"><span>Back to the Codrops Article</span></a></span>
 			</div> -->
 			<header>
-				<h1 style="font-size:400%"> The Retrospective Crypto <span style="font-size:50%">how much would you have made if you'd invested in that cryptocurrency that one time?</span></h1>
+				<h1 style="font-size:400%; margin-top:5%"> The Retrospective Crypto <span style="font-size:50%">how much would you have made if you'd invested in that cryptocurrency that one time?</span></h1>
 			</header>
 			<div class="main clearfix">
-				<form id="nl-form" class="nl-form">
+				<form id="nl-form" class="nl-form" style="font-size:350%">
 					If I bought $ <input type="text" name="amount" id="amountField" value="" placeholder="0" data-subline="For example:= 100"/>
 					<br /> worth of
 					<select id="currencyField" name="currency">
 						<option value="1" selected>cryptocurrency</option>
-						<option value="2">Bitcoin (BTC)</option>
-						<option value="3">Ethereum (ETH)</option>
-						<option value="4">Litecoin (LTC)</option>
+						<option value="BTC">Bitcoin (BTC)</option>
+						<option value="ETH">Ethereum (ETH)</option>
+						<option value="LTC">Litecoin (LTC)</option>
+						<option value="BCH">Bitcoin Cash (BCH)</option>
+						<option value="XRP">Ripple (XRP)</option>
 					</select>
 					<br />on
 					<select>
@@ -95,7 +97,9 @@
           var a = false;;
           var b = false;
 
-          $.ajax({
+					var date = formatDate(selectedDate);
+
+					var async1 = $.ajax({
               url: 'https://api.coindesk.com/v1/bpi/currentprice.json',
               type: 'GET',
               success: function(data){
@@ -103,24 +107,29 @@
                   a = true;
               },
               error: function(data) {
-                  alert('woops!'); //or whatever
+                  alert('whoops, something went wrong, please refresh the page and try again'); //or whatever
                   a = false;
               }
           });
-          $.ajax({
-              url: "http://localhost:5000/btc/"+selectedDate,
+
+					var async2 = $.ajax({
+              url: "http://localhost:5000/"+selectedCurrency+"/"+date,
               type: 'GET',
               success: function(data){
                   prevPrice = data.price;
                   b = true;
               },
               error: function(data) {
-                  alert('woops!'); //or whatever
+                  alert('whoops, something went wrong, please refresh the page and try again'); //or whatever
                   b = false;
               }
           });
-        }
-      }
+					$.when(async2, async1).done(function() {
+    				var percentChange = ((currPrice - prevPrice)/prevPrice);
+						alert(currPrice+(currPrice*percentChange));
+    		})
+			}
+		}
 
       function isValidNumber(num) {
           if(num.match(/^-{0,1}\d+$/)){
@@ -131,6 +140,10 @@
             return false;
           }
       }
+
+			function formatDate (input) {
+				var newdate = input.split("-").reverse().join("-");
+			}
 
 		</script>
 	</body>
